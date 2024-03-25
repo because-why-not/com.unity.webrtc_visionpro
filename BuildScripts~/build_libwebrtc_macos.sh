@@ -57,6 +57,7 @@ do
       is_component_build=false \
       use_rtti=true \
       rtc_use_x11=false \
+      mac_deployment_target=\"10.15\" \
       use_cxx17=true"
 
     # build static library
