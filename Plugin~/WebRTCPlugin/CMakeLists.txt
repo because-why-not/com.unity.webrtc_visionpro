@@ -207,7 +207,7 @@ elseif(xros)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -x objective-c")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-lto -fno-rtti")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
-  set(PROJECT_BINARY_DIR "${CMAKE_SOURCE_DIR}/../Runtime/Plugins/xros")
+  set(PROJECT_BINARY_DIR "${CMAKE_SOURCE_DIR}/../Runtime/Plugins/simxros")
 
   target_compile_definitions(WebRTCLib PUBLIC WEBRTC_XROS WEBRTC_MAC
                                               WEBRTC_POSIX)
@@ -242,8 +242,11 @@ add_library(WebRTCPlugin SHARED)
 set_target_properties(WebRTCPlugin PROPERTIES CXX_VISIBILITY_PRESET hidden
                                               VISIBILITY_INLINES_HIDDEN ON)
 
-if(iOS)
+if(iOS OR xros)
   set_target_properties(WebRTCPlugin PROPERTIES FRAMEWORK TRUE)
+  #without it cmake breaks the .framework by calling it libsomething.so
+  set(CMAKE_SHARED_LIBRARY_PREFIX "")
+  set(CMAKE_SHARED_LIBRARY_SUFFIX "")
 endif()
 
 if(Windows)
@@ -275,7 +278,7 @@ if(Windows)
       MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 elseif(macOS)
   set_target_properties(WebRTCPlugin PROPERTIES LINK_FLAGS "-ObjC")
-elseif(iOS)
+elseif(iOS OR xros) 
   #
   # Build Setting Reference
   # https://developer.apple.com/library/archive/documentation/DeveloperTools/Reference/XcodeBuildSettingRef/1-Build_Setting_Reference/build_setting_ref.html
