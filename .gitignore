@@ -386,3 +386,9 @@ Runtime/Plugins/x86_64/*.pdb.meta
 
 #macos
 **/.DS_Store
+
+out/
+src/
+.cipd/
+.gclient*
+depot_tools/
