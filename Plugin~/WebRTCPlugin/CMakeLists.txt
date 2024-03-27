@@ -207,7 +207,8 @@ elseif(xros)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -x objective-c")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-lto -fno-rtti")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
-  set(PROJECT_BINARY_DIR "${CMAKE_SOURCE_DIR}/../Runtime/Plugins/simxros")
+  set(PROJECT_BINARY_DIR "${CMAKE_SOURCE_DIR}/${XROS_OUT_DIR}")
+  MESSAGE(STATUS "xros output to ${PROJECT_BINARY_DIR}")
 
   target_compile_definitions(WebRTCLib PUBLIC WEBRTC_XROS WEBRTC_MAC
                                               WEBRTC_POSIX)
