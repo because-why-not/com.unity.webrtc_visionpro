@@ -33,6 +33,7 @@
 
 _LIBCPP_BEGIN_NAMESPACE_STD
 
+#if defined(USE_DEBUG_MODE)
 #if __clang_major__ >= 12
 std::string __libcpp_debug_info::what() const {
   string msg = __file_;
@@ -59,7 +60,6 @@ bool __libcpp_set_debug_function(__libcpp_debug_function_type __func) {
   return true;
 }
 
-#if defined(USE_DEBUG_MODE)
 
 _LIBCPP_FUNC_VIS
 __libcpp_db*

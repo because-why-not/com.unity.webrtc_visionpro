@@ -91,7 +91,7 @@ target_compile_definitions(WebRTCLib PUBLIC $<$<CONFIG:Debug>:DEBUG>)
 set_target_properties(WebRTCLib PROPERTIES CXX_VISIBILITY_PRESET hidden
                                            VISIBILITY_INLINES_HIDDEN ON)
 
-if(iOS OR macOS)
+if(iOS OR macOS OR xros)
   target_sources(WebRTCLib PRIVATE ../libcxx/debug.cpp)
 else()
   target_sources(WebRTCLib PRIVATE UnityVulkanInterfaceFunctions.cpp
@@ -203,6 +203,18 @@ elseif(iOS)
   target_include_directories(WebRTCLib SYSTEM PUBLIC ${WEBRTC_OBJC_INCLUDE_DIR})
   target_link_libraries(WebRTCLib PRIVATE ${WEBRTC_LIBRARY} ${FRAMEWORK_LIBS})
   set_target_properties(WebRTCLib PROPERTIES LINK_FLAGS "-ObjC")
+elseif(xros)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -x objective-c")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-lto -fno-rtti")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -x objective-c++")
+  set(PROJECT_BINARY_DIR "${CMAKE_SOURCE_DIR}/${XROS_OUT_DIR}")
+  MESSAGE(STATUS "xros output to ${PROJECT_BINARY_DIR}")
+
+  target_compile_definitions(WebRTCLib PUBLIC WEBRTC_XROS WEBRTC_MAC
+                                              WEBRTC_POSIX)
+  target_include_directories(WebRTCLib SYSTEM PUBLIC ${WEBRTC_OBJC_INCLUDE_DIR})
+  target_link_libraries(WebRTCLib PRIVATE ${WEBRTC_LIBRARY} ${FRAMEWORK_LIBS})
+  set_target_properties(WebRTCLib PROPERTIES LINK_FLAGS "-ObjC")
 elseif(Android)
   target_compile_definitions(WebRTCLib PUBLIC WEBRTC_ANDROID WEBRTC_POSIX
                                               VK_NO_PROTOTYPES)
@@ -231,8 +243,11 @@ add_library(WebRTCPlugin SHARED)
 set_target_properties(WebRTCPlugin PROPERTIES CXX_VISIBILITY_PRESET hidden
                                               VISIBILITY_INLINES_HIDDEN ON)
 
-if(iOS)
+if(iOS OR xros)
   set_target_properties(WebRTCPlugin PROPERTIES FRAMEWORK TRUE)
+  #without it cmake breaks the .framework by calling it libsomething.so
+  set(CMAKE_SHARED_LIBRARY_PREFIX "")
+  set(CMAKE_SHARED_LIBRARY_SUFFIX "")
 endif()
 
 if(Windows)
@@ -264,7 +279,7 @@ if(Windows)
       MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 elseif(macOS)
   set_target_properties(WebRTCPlugin PROPERTIES LINK_FLAGS "-ObjC")
-elseif(iOS)
+elseif(iOS OR xros) 
   #
   # Build Setting Reference
   # https://developer.apple.com/library/archive/documentation/DeveloperTools/Reference/XcodeBuildSettingRef/1-Build_Setting_Reference/build_setting_ref.html
