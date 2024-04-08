@@ -1,3 +1,13 @@
+# Vision pro port details
+This repository is used as a subrepository and does not contain the build scripts.
+
+To test the latest build see the test project:
+https://github.com/because-why-not/uwebrtc_visionpro_testproj/releases 
+
+To build your own version see:
+https://github.com/because-why-not/uwebrtc_visionpro
+
+
 # WebRTC for Unity
 
 <img src="https://img.shields.io/badge/unity-2020.3-green.svg?style=flat-square" alt="unity 2020.3">
