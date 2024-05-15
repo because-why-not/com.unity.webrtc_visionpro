@@ -18,7 +18,8 @@
 
 
 #include "__config"
-#include "__debug"
+//christoph: This file appears to be missing from XCode 15.4?
+//#include "__debug"
 #include "functional"
 #include "algorithm"
 #include "string"
