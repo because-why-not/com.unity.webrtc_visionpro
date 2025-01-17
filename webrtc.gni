@@ -329,8 +329,9 @@ rtc_libvpx_dir = "//third_party/libvpx"
 rtc_opus_dir = "//third_party/opus"
 
 # Desktop capturer is supported only on Windows, OSX and Linux.
+#christoph: removed "|| is_mac" here. It no longer builds with latest SDK on xcode 16.2
 rtc_desktop_capture_supported =
-    (is_win && current_os != "winuwp") || is_mac ||
+    (is_win && current_os != "winuwp") ||
     ((is_linux || is_chromeos) && (rtc_use_x11_extensions || rtc_use_pipewire))
 
 ###############################################################################
